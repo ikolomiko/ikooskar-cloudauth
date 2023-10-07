@@ -1,0 +1,21 @@
+# fatih + singlepc combined
+
+req = [serial, mac, ip]
+
+if (req.mac.empty || req.ip.empty || req.serial.empty)
+    return (400, "bad request")
+
+q = select * from table where serial = req.serial
+
+if (q.empty) 
+    return (404, "not found")
+
+if (q.mac.empty && q.ip.empty) {
+    update table with req.mac and req.ip
+    return (201, "activated")
+}
+
+if (q.mac == req.mac || q.ip == req.ip) 
+    return (200, "success")
+    
+return (401, "unauthorized")

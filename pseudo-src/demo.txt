@@ -1,0 +1,24 @@
+# demo
+
+req = [mac, remainings]
+
+if (req.mac.empty || req.remainings.empty)
+    return (400, "bad request")
+    
+q = select * from table where mac=req.mac
+
+if (q.empty) {
+    insert into table (mac, rem) values (req.mac, 3)
+    return (201, "3") # activated
+}
+
+if (q.rem <= 0) {
+    return (401, "0") # end of demo
+}
+
+if (req.rem < q.rem) {
+    update table set rem=(req.rem) where mac=(req.mac)
+    return (200, str(req.rem)) # updated / reactivated
+}
+
+return (406, str(q.rem))
