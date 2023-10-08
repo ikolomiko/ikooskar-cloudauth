@@ -7,7 +7,7 @@ from typing import Optional
 from model import LicensedUser, DemoUser, init_db
 import traceback
 
-
+init_db()
 app = Flask(__name__)
 
 
@@ -95,5 +95,4 @@ def demo_user() -> Response:
 
 
 if __name__ == "__main__":
-    init_db()
     app.run()
