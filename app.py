@@ -4,7 +4,8 @@ from flask import Flask, request, Response
 from http import HTTPStatus
 from typing import Optional
 from model import LicensedUser, DemoUser, init_db
-from sys import stderr
+import traceback
+
 
 app = Flask(__name__)
 
@@ -33,8 +34,8 @@ def query_licensed(serial: str, mac: str, ip: str) -> Response:
         # The given serial key exists in the db but with a different set of mac and ip addresses
         return Response("unauthorized", HTTPStatus.UNAUTHORIZED)  # code 401
 
-    except Exception as e:
-        print(e, file=stderr)
+    except Exception:
+        traceback.print_exc()
         # Other error
         return Response("other error", HTTPStatus.INTERNAL_SERVER_ERROR)  # code 500
 
@@ -63,8 +64,8 @@ def query_demo(mac: str, remainings: int) -> Response:
         # Return the current remainings of the user (this branch can also can imply reactivation)
         return Response(str(user.remainings), HTTPStatus.OK)  # code 200
 
-    except Exception as e:
-        print(e, file=stderr)
+    except Exception:
+        traceback.print_exc()
         # Other error
         return Response("other error", HTTPStatus.INTERNAL_SERVER_ERROR)  # code 500
 
