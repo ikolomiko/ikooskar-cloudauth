@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# type: ignore[assignment]
 
 from flask import Flask, request, Response
 from http import HTTPStatus
@@ -22,8 +23,8 @@ def query_licensed(serial: str, mac: str, ip: str) -> Response:
 
         # Activation
         if user.mac is None and user.ip is None:
-            user.mac = mac.strip()  # type: ignore[assignment]
-            user.ip = ip.strip()  # type: ignore[assignment]
+            user.mac = mac.strip()
+            user.ip = ip.strip()
             user.save()
             return Response("activated", HTTPStatus.CREATED)  # code 201
 
@@ -58,7 +59,7 @@ def query_demo(mac: str, remainings: int) -> Response:
 
         # Decrement the remainings in the db
         if remainings < user.remainings:
-            user.remainings = remainings  # type: ignore[assignment]
+            user.remainings = remainings
             user.save()
 
         # Return the current remainings of the user (this branch can also can imply reactivation)
