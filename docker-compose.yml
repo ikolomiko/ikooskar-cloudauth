@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./database.db:/app/database.db
+      - ./data:/app/data
     ports:
       - "5002:5002"
 

@@ -2,8 +2,10 @@
 
 from datetime import datetime
 from peewee import SqliteDatabase, TextField, Model, IntegerField, DateTimeField
+from pathlib import Path
 
-db = SqliteDatabase("database.db")
+Path("./data").mkdir(parents=True, exist_ok=True)
+db = SqliteDatabase("data/database.db")
 
 
 class LicensedUser(Model):
