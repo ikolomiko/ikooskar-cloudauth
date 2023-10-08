@@ -18,7 +18,6 @@ if (q.rem <= 0) {
 
 if (req.rem < q.rem) {
     update table set rem=(req.rem) where mac=(req.mac)
-    return (200, str(req.rem)) # updated / reactivated
 }
 
-return (406, str(q.rem))
+return (200, str(q.rem)) # updated (if necessary) / reactivated
