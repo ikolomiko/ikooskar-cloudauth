@@ -4,6 +4,7 @@ from flask import Flask, request, Response
 from http import HTTPStatus
 from typing import Optional
 from model import LicensedUser, DemoUser, init_db
+from sys import stderr
 
 app = Flask(__name__)
 
@@ -33,7 +34,7 @@ def query_licensed(serial: str, mac: str, ip: str) -> Response:
         return Response("unauthorized", HTTPStatus.UNAUTHORIZED)  # code 401
 
     except Exception as e:
-        print(e)
+        print(e, file=stderr)
         # Other error
         return Response("other error", HTTPStatus.INTERNAL_SERVER_ERROR)  # code 500
 
@@ -63,7 +64,7 @@ def query_demo(mac: str, remainings: int) -> Response:
         return Response(str(user.remainings), HTTPStatus.OK)  # code 200
 
     except Exception as e:
-        print(e)
+        print(e, file=stderr)
         # Other error
         return Response("other error", HTTPStatus.INTERNAL_SERVER_ERROR)  # code 500
 
