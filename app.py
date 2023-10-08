@@ -54,7 +54,7 @@ def query_demo(mac: str, remainings: int) -> Response:
 
         # No remainings were left, end of demo
         if user.remainings <= 0:
-            return Response("0", HTTPStatus.UNAUTHORIZED)  # code 401
+            return Response("0", HTTPStatus.FORBIDDEN)  # code 403
 
         # Decrement the remainings in the db
         if remainings < user.remainings:

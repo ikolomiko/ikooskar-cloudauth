@@ -13,7 +13,7 @@ if (q.empty) {
 }
 
 if (q.rem <= 0) {
-    return (401, "0") # end of demo
+    return (403, "0") # end of demo
 }
 
 if (req.rem < q.rem) {
