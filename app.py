@@ -90,7 +90,7 @@ def licensed_user() -> Response:
     if (req_serial is None) or (req_mac is None):
         return Response("bad request", HTTPStatus.BAD_REQUEST)  # code 400
 
-    return query_licensed(req_serial, req_mac, req_ip)
+    return query_licensed(req_serial, req_mac)
 
 
 @app.route("/v4/demo", methods=["GET", "POST"])
