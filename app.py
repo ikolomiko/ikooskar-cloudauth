@@ -12,7 +12,7 @@ init_db()
 app = Flask(__name__)
 
 
-def query_licensed(serial: str, mac: str, ip: str) -> Response:
+def query_licensed(serial: str, mac: str) -> Response:
     try:
         user: Optional[LicensedUser] = LicensedUser.get_or_none(
             LicensedUser.serial == serial
@@ -22,10 +22,12 @@ def query_licensed(serial: str, mac: str, ip: str) -> Response:
         if not user:
             return Response("not found", HTTPStatus.NOT_FOUND)  # code 404
 
+        ip = get_ip_address()
+
         # Activation
         if user.mac is None and user.ip is None:
             user.mac = mac.strip()
-            user.ip = ip.strip()
+            user.ip = ip
             user.activation_date = datetime.now()
             user.save()
             return Response("activated", HTTPStatus.CREATED)  # code 201
@@ -73,13 +75,19 @@ def query_demo(mac: str, remainings: int) -> Response:
         return Response("other error", HTTPStatus.INTERNAL_SERVER_ERROR)  # code 500
 
 
+def get_ip_address() -> str:
+    if request.environ.get("HTTP_X_FORWARDED_FOR") is None:
+        return Response(request.environ["REMOTE_ADDR"], HTTPStatus.OK)
+    else:
+        return Response(request.environ["HTTP_X_FORWARDED_FOR"], HTTPStatus.OK)
+
+
 @app.route("/v4/license", methods=["GET", "POST"])
 def licensed_user() -> Response:
     req_serial: Optional[str] = request.args.get("serial", None)
     req_mac: Optional[str] = request.args.get("mac", None)
-    req_ip: Optional[str] = request.args.get("ip", None)
 
-    if (not req_serial) or (not req_mac) or (not req_ip):
+    if (req_serial is None) or (req_mac is None):
         return Response("bad request", HTTPStatus.BAD_REQUEST)  # code 400
 
     return query_licensed(req_serial, req_mac, req_ip)
@@ -90,10 +98,15 @@ def demo_user() -> Response:
     req_remainings: Optional[int] = request.args.get("remainings", None, int)
     req_mac: Optional[str] = request.args.get("mac", None)
 
-    if (req_remainings is None) or (not req_mac):
+    if (req_remainings is None) or (req_mac is None):
         return Response("bad request", HTTPStatus.BAD_REQUEST)  # code 400
 
     return query_demo(req_mac, req_remainings)
+
+
+@app.route("/v4/ip", methods=["GET"])
+def ip_address() -> Response:
+    return Response(get_ip_address(), HTTPStatus.OK)  # code 200
 
 
 if __name__ == "__main__":
