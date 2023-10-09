@@ -77,9 +77,9 @@ def query_demo(mac: str, remainings: int) -> Response:
 
 def get_ip_address() -> str:
     if request.environ.get("HTTP_X_FORWARDED_FOR") is None:
-        return Response(request.environ["REMOTE_ADDR"], HTTPStatus.OK)
+        return str(request.environ["REMOTE_ADDR"])
     else:
-        return Response(request.environ["HTTP_X_FORWARDED_FOR"], HTTPStatus.OK)
+        return str(request.environ["HTTP_X_FORWARDED_FOR"])
 
 
 @app.route("/v4/license", methods=["GET", "POST"])
