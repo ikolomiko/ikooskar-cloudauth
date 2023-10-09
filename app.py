@@ -5,6 +5,7 @@ from flask import Flask, request, Response
 from http import HTTPStatus
 from typing import Optional
 from model import LicensedUser, DemoUser, init_db
+from datetime import datetime
 import traceback
 
 init_db()
@@ -25,6 +26,7 @@ def query_licensed(serial: str, mac: str, ip: str) -> Response:
         if user.mac is None and user.ip is None:
             user.mac = mac.strip()
             user.ip = ip.strip()
+            user.activation_date = datetime.now()
             user.save()
             return Response("activated", HTTPStatus.CREATED)  # code 201
 

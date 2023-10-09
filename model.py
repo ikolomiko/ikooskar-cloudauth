@@ -12,7 +12,7 @@ class LicensedUser(Model):
     serial = TextField(primary_key=True, unique=True, null=False)
     mac = TextField(null=True, default=None)
     ip = TextField(null=True, default=None)
-    created_date = DateTimeField(default=datetime.now)
+    activation_date = DateTimeField(null=True, default=None)
 
     class Meta:
         database = db
@@ -21,7 +21,7 @@ class LicensedUser(Model):
 class DemoUser(Model):
     mac = TextField(primary_key=True, unique=True, null=False)
     remainings = IntegerField(null=False, default=3)
-    created_date = DateTimeField(default=datetime.now)
+    creation_date = DateTimeField(default=datetime.now)
 
     class Meta:
         database = db
