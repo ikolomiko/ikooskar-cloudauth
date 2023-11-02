@@ -82,7 +82,7 @@ def get_ip_address() -> str:
         return str(request.environ["HTTP_X_FORWARDED_FOR"])
 
 
-@app.route("/v4/license", methods=["GET", "POST"])
+@app.route("/api/v4/license", methods=["GET", "POST"])
 def licensed_user() -> Response:
     req_serial: Optional[str] = request.args.get("serial", None)
     req_mac: Optional[str] = request.args.get("mac", None)
@@ -93,7 +93,7 @@ def licensed_user() -> Response:
     return query_licensed(req_serial, req_mac)
 
 
-@app.route("/v4/demo", methods=["GET", "POST"])
+@app.route("/api/v4/demo", methods=["GET", "POST"])
 def demo_user() -> Response:
     req_remainings: Optional[int] = request.args.get("remainings", None, int)
     req_mac: Optional[str] = request.args.get("mac", None)
@@ -104,7 +104,7 @@ def demo_user() -> Response:
     return query_demo(req_mac, req_remainings)
 
 
-@app.route("/v4/ip", methods=["GET"])
+@app.route("/api/v4/ip", methods=["GET"])
 def ip_address() -> Response:
     return Response(get_ip_address(), HTTPStatus.OK)  # code 200
 
