@@ -1,7 +1,7 @@
-FROM python:3.11-alpine as base
+FROM python:3.11-alpine AS base
 
 # build phase
-FROM base as builder
+FROM base AS builder
 
 RUN mkdir /install
 WORKDIR /install
@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir --prefix=/install -r /requirements.txt
 FROM base
 
 COPY --from=builder /install /usr/local
-COPY app.py model.py /app
+COPY app.py model.py /app/
 
 EXPOSE 5002
 
